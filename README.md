@@ -56,7 +56,7 @@ python test.py
 
 To see example usage of the Python wrappers (using the ROS specific helpers) see [https://github.com/f1tenth/particle_filter](https://github.com/f1tenth/particle_filter). See the [/docs](/docs) folder for documentation.
 
-### Building on a Jetson (Xavier and Orin tested)
+### Building on a Jetson Orin
 
 To install on a Jetson, you will need to install the following dependencies:
 

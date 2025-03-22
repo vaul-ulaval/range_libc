@@ -58,7 +58,7 @@ To see example usage of the Python wrappers (using the ROS specific helpers) see
 
 ### Building on a Jetson Orin
 
-To install on a Jetson, you will need to install the following dependencies:
+To install on a Jetson Orin, you will need to install the following dependencies:
 
 ```
 # Copy the code
@@ -72,6 +72,8 @@ sudo apt-get install Cython==3.0.12
 cd pywrapper
 WITH_CUDA=ON python setup.py install --user
 ```
+
+For other Jetson platforms, you may need to change the gcc/g++ versions in setup.py lines 110-123 to match the version of gcc/g++ on your system. You can find the version of gcc/g++ on your system by running `gcc --version` and `g++ --version`. You will also need to update the '-arch' flag in the setup.py file to match the architecture of your Jetson platform. For example, for a Jetson Xavier, you would change the '-arch' flag to 'sm_72'. The flag is on line 99 of the setup.py file.
 
 ## License
 

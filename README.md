@@ -68,7 +68,7 @@ mkdir build
 cmake ..
 make
 # To build the Python wrappers, Cython 3.0.12 needed for GPU support
-sudo apt-get install Cython==3.0.12
+pip3 install Cython==3.0.12
 cd pywrapper
 WITH_CUDA=ON python setup.py install --user
 ```

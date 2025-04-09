@@ -7,7 +7,7 @@ file(GLOB SRCS
 	main.cpp 
 	"vendor/lodepng/lodepng.cpp" )
 
-option(WITH_CUDA "Compile CUDA ray cast varients" ON)
+option(WITH_CUDA "Compile CUDA ray cast varients" OFF)
 # set(CHUNK_SIZE 16384)
 # set(CHUNK_THREADS 256)
 set(CHUNK_SIZE 262144)
@@ -66,7 +66,23 @@ if (WITH_CUDA)
 else()
 	add_definitions(-DUSE_CUDA=0)
 	add_executable(range_lib ${SRCS})
+	include_directories(${PROJECT_SOURCE_DIR}/vendor)
 endif()
 
 
 target_link_libraries(range_lib gflags pthread)
+
+install(TARGETS range_lib
+  RUNTIME DESTINATION bin
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+)
+
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/vendor/lodepng DESTINATION include/vendor)
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/vendor DESTINATION include)
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/includes DESTINATION include)
+
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/includes/
+  DESTINATION include
+  FILES_MATCHING PATTERN "*.h"
+)

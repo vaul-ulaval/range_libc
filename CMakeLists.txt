@@ -1,19 +1,20 @@
 cmake_minimum_required(VERSION 3.16)
-project(range_libc LANGUAGES CXX CUDA)
 
 # Options
 option(WITH_CUDA "Compile CUDA ray cast variants" ON)
 
-# CUDA Settings
-set(CHUNK_SIZE 262144)
-set(CHUNK_THREADS 256)
+# Set languages based on CUDA option
+if(WITH_CUDA)
+    project(range_libc LANGUAGES CXX CUDA)
+    set(CHUNK_SIZE 262144)
+    set(CHUNK_THREADS 256)
 
-if (WITH_CUDA)
-  	add_definitions(-DUSE_CUDA=1)
-	add_definitions(-DCHUNK_SIZE=${CHUNK_SIZE})
-	add_definitions(-DNUM_THREADS=${CHUNK_THREADS})
+    add_definitions(-DUSE_CUDA=1)
+    add_definitions(-DCHUNK_SIZE=${CHUNK_SIZE})
+    add_definitions(-DNUM_THREADS=${CHUNK_THREADS})
+else()
+    project(range_libc LANGUAGES CXX)
 endif()
-
 
 # Output directories
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)

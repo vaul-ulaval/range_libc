@@ -106,7 +106,6 @@ Useful Links: https://github.com/MRPT/mrpt/blob/4137046479222f3a71b5c00aee1d5fa8
 #define J2 J1 J1
 #define J3 J1 J1 J1
 #define J4 J2 J2
-#define USE_CUDA 1
 #if USE_CUDA == 1
 	#ifndef CHUNK_SIZE 
 	#define CHUNK_SIZE 262144

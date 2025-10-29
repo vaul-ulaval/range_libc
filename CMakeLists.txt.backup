@@ -71,11 +71,6 @@ target_link_libraries(range_libc
   pthread
 )
 
-# Link CUDA runtime when CUDA is enabled
-if(WITH_CUDA)
-  target_link_libraries(range_libc cudart)
-endif()
-
 # Create executable that uses the library
 add_executable(range_libc_bin ${EXEC_SRCS})
 set_target_properties(range_libc_bin PROPERTIES OUTPUT_NAME "range_libc")

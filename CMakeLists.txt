@@ -51,9 +51,38 @@ add_library(range_libc SHARED ${LIB_SRCS})
 
 # CUDA target properties for the library
 if(WITH_CUDA)
+  if(DEFINED ENV{CUDA_ARCH})
+    set(CMAKE_CUDA_ARCHITECTURES $ENV{CUDA_ARCH})
+  elseif(CMAKE_VERSION VERSION_GREATER_EQUAL 3.24)
+    # Use native architecture detection for newer CMake
+    set(CMAKE_CUDA_ARCHITECTURES native)
+  else()
+    # For older CMake, detect architecture manually
+    execute_process(
+      COMMAND nvidia-smi --query-gpu=compute_cap --format=csv,noheader,nounits
+      OUTPUT_VARIABLE GPU_COMPUTE_CAP
+      ERROR_QUIET
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    
+    if(GPU_COMPUTE_CAP)
+      # Convert compute capability format (e.g., "8.7" -> "87")
+      string(REPLACE "." "" CUDA_ARCH_NUMBER ${GPU_COMPUTE_CAP})
+      message(STATUS "Detected GPU compute capability: ${GPU_COMPUTE_CAP} (sm_${CUDA_ARCH_NUMBER})")
+      
+      set(CMAKE_CUDA_ARCHITECTURES ${CUDA_ARCH_NUMBER})
+    else()
+      # Fallback to common architectures if detection fails
+      message(WARNING "Could not detect GPU compute capability, using fallback architectures")
+      set(CMAKE_CUDA_ARCHITECTURES "70;75;80;87")
+    endif()
+  endif()
+
+  message(STATUS "Detected CUDA architecture as ${CMAKE_CUDA_ARCHITECTURES}")
+
   set_target_properties(range_libc PROPERTIES
     CUDA_SEPARABLE_COMPILATION ON
-    CUDA_ARCHITECTURES 87
+    CUDA_ARCHITECTURES ${CMAKE_CUDA_ARCHITECTURES}
     POSITION_INDEPENDENT_CODE ON
   )
 endif()
